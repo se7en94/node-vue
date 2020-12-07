@@ -4,7 +4,7 @@ import { AdminModule } from './admin.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AdminModule);
-
+  app.enableCors()
   const options = new DocumentBuilder()
     .setTitle('后台管理模块API')
     .setDescription('The cats API description')
