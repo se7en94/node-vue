@@ -1,25 +1,23 @@
 <template>
-  <div>
-    <el-container>
-      <el-aside width="200px">
-        <el-menu mode="vertical" :default-active="route.path" router>
-          <el-submenu
-            v-for="(item, index) in menu.items"
-            :index="index + 1"
-            :key="`menu-item-${index}`"
+  <el-container>
+    <el-aside width="200px">
+      <el-menu mode="vertical" :default-active="route.path" router>
+        <el-submenu
+          v-for="(item, index) in menu.items"
+          :index="index + 1"
+          :key="`menu-item-${index}`"
+        >
+          <template #title>{{ item.title }}</template>
+          <el-menu-item
+            v-for="(subItem, subIndex) in item.items"
+            :index="subItem.path"
+            :key="`menu-iten-${index}-${subIndex}`"
           >
-            <template #title>{{ item.title }}</template>
-            <el-menu-item
-              v-for="(subItem, subIndex) in item.items"
-              :index="subItem.path"
-              :key="`menu-iten-${index}-${subIndex}`"
-            >
-              {{ subItem.title }}
-            </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-    </el-container>
+            {{ subItem.title }}
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </el-aside>
 
     <el-container>
       <el-header>后台管理</el-header>
@@ -27,7 +25,7 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script lang="ts">

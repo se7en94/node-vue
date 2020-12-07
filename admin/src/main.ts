@@ -5,6 +5,7 @@ import 'element-plus/lib/theme-chalk/index.css'
 import VueRouter from './router'
 
 const app = createApp(App)
+
 app.use(ElementPlus)
 app.use(VueRouter)
 app.mount('#app')
