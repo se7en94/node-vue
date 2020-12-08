@@ -1,10 +1,17 @@
 <template>
   <el-container>
     <el-aside width="200px">
-      <el-menu mode="vertical" :default-active="route.path" router>
+      <el-menu
+        mode="vertical"
+        :default-active="route.path"
+        router
+        background-color="#2d4155"
+        text-color="#bdcbd9"
+        active-text-color="#2b9dfb"
+      >
         <el-submenu
           v-for="(item, index) in menu.items"
-          :index="index + 1"
+          :index="`menu-item-${index}`"
           :key="`menu-item-${index}`"
         >
           <template #title>{{ item.title }}</template>
@@ -20,9 +27,9 @@
     </el-aside>
 
     <el-container>
-      <el-header>后台管理</el-header>
+      <el-header>博客后台管理系统</el-header>
       <el-main>
-        <router-view></router-view>
+        <router-view :key="route.path"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -38,7 +45,7 @@ const menu = {
       items: [
         { title: '首页', path: '/' },
         { title: '课程管理', path: '/courses/list' },
-        { title: '课时管理', path: '/courses/list' }
+        { title: '课时管理', path: '/courses/edit/123' }
       ]
     },
     {
@@ -49,7 +56,7 @@ const menu = {
 }
 export default defineComponent({
   name: 'Main',
-  setup () {
+  setup() {
     const route = useRoute()
 
     return {
@@ -60,5 +67,17 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
+.container,
+.el-container,
+.el-menu {
+  height: 100%;
+}
+
+.el-header {
+  color: #97a8be;
+  line-height: 60px;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
 </style>

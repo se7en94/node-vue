@@ -1,23 +1,38 @@
 <template>
-  <div>About</div>
+  <div class="container">
+    <el-table :data="coursesList.list" style="width: 100%">
+      <el-table-column prop="_id" label="日期" width="180"> </el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+      <el-table-column prop="cover" label="地址"> </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-// import { get } from '../../api/api'
-import axios from 'axios'
+import { ref, reactive, defineComponent, onMounted } from 'vue'
+import { get } from '../../api/api'
+
 export default defineComponent({
   name: 'About',
-  setup () {
-    // get('/courses').then(res => {
-    //   console.log(res)
-    // })
-    axios.get('http://localhost:3000/courses').then(res => {
-      console.log(res)
+  setup() {
+    const coursesList = reactive({
+      list: []
     })
+
+    onMounted(async () => {
+      const res: any = await get('/courses')
+      coursesList.list = res.data
+    })
+
+    return {
+      coursesList
+    }
   }
 })
 </script>
 
-<style>
+<style scoped>
+.container {
+  height: 100%;
+}
 </style>

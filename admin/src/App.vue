@@ -1,12 +1,12 @@
 <template>
-  <div id="id">
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-console.log('BASE_API', process.env.BASE_API)
+
 export default defineComponent({
   name: 'App',
   components: {}
@@ -19,5 +19,7 @@ body,
 #app {
   height: 100%;
   width: 100%;
+  /* margin: 0;
+  padding: 0; */
 }
 </style>
