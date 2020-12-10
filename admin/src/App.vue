@@ -8,8 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'App',
-  components: {}
+  name: 'App'
 })
 </script>
 
@@ -21,5 +20,9 @@ body,
   width: 100%;
   /* margin: 0;
   padding: 0; */
+}
+
+.el-main {
+  background: rgb(240, 242, 245)
 }
 </style>

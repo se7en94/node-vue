@@ -9,14 +9,28 @@ const router = createRouter({
   history: routerHistory,
   routes: [
     {
+      path: '/login',
+      name: '登录',
+      meta: { hidden: true },
+      component: Home
+    },
+    {
       path: '/',
-      name: 'main',
       component: Main,
+      meta: { hidden: false },
       children: [
-        { path: '/', name: 'home', component: Home },
-        { path: '/courses/list', name: 'courses-list', component: CourseList },
-        { path: '/courses/edit/:id', name: 'courses-edit', component: CourseEdit, props: true },
-        { path: '/courses/create', name: 'courses-create', component: CourseEdit }
+        { name: '首页', path: '/', meta: { icon: 'el-icon-s-home' }, component: Home }
+      ]
+    },
+    {
+      path: '/',
+      name: '课程管理',
+      component: Main,
+      meta: { hidden: false, icon: 'el-icon-notebook-2' },
+      children: [
+        { name: '课程列表', path: '/courses/list', component: CourseList, meta: { icon: 'el-icon-reading' } },
+        { name: '新增课程', path: '/courses/create', component: CourseEdit, meta: { icon: 'el-icon-document-add' } },
+        { name: '修改课程', path: '/courses/edit/:id', component: CourseEdit, props: true, meta: { icon: 'el-icon-edit' } }
       ]
     }
   ]

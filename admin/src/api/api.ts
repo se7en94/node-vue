@@ -65,17 +65,18 @@ service.interceptors.response.use(
  * @returns Promise
  */
 export function post (url: string, params?: object, config?: any, error?: string) {
-  const { headers } = config
-  let param: any = ''
-  if (headers && headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-    param = qs.stringify(paramFilter(params))
-  } else {
-    param = paramFilter(params)
-  }
+  // console.log(config)
+  // const { headers } = config
+  // let param: any = ''
+  // if (headers && headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+  //   param = qs.stringify(paramFilter(params))
+  // } else {
+  //   param = paramFilter(params)
+  // }
   return new Promise((resolve, reject) => {
     service.post(
       url,
-      param,
+      params,
       { ...config }
     ).then(response => {
       resolve(response)
@@ -96,6 +97,44 @@ export function get (url: string, params = {}) {
     service.get(
       url,
       { ...params }
+    ).then(response => {
+      resolve(response)
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+/**
+ * put方法，对应put请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ * @returns Promise
+ */
+export function put (url: string, params?: object, config?: any, error?: string) {
+  return new Promise((resolve, reject) => {
+    service.put(
+      url,
+      params
+    ).then(response => {
+      resolve(response)
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+/**
+ * put方法，对应put请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ * @returns Promise
+ */
+export function deleteReq (url: string, params?: object, config?: any, error?: string) {
+  return new Promise((resolve, reject) => {
+    service.delete(
+      url,
+      params
     ).then(response => {
       resolve(response)
     }).catch(error => {
