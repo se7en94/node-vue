@@ -94,9 +94,8 @@ export function post (url: string, params?: object, config?: any, error?: string
  */
 export function get (url: string, params = {}) {
   return new Promise((resolve, reject) => {
-    service.get(
-      url,
-      { ...params }
+    service(
+      { url, method: 'GET', params: { ...params } }
     ).then(response => {
       resolve(response)
     }).catch(error => {
