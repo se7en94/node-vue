@@ -3,7 +3,7 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import './assets/css/reset.css'
-import VueRouter from './router'
+import VueRouter from './router/index'
 const app = createApp(App)
 
 const win: any = window

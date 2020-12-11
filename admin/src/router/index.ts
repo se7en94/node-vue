@@ -1,8 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import Home from './views/Home.vue'
-import Main from './views/Main.vue'
-import CourseList from './views/courses/CourseList.vue'
-import CourseEdit from './views/courses/CourseEdit.vue'
+import Home from '../views/Home.vue'
+import Layout from '../layout/index.vue'
+import CourseList from '../views/courses/CourseList.vue'
+import CourseEdit from '../views/courses/CourseEdit.vue'
 
 const routerHistory = createWebHistory()
 const router = createRouter({
@@ -16,7 +16,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: Main,
+      component: Layout,
       meta: { hidden: false },
       children: [
         { name: '首页', path: '/', meta: { icon: 'el-icon-s-home' }, component: Home }
@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: '/',
       name: '课程管理',
-      component: Main,
+      component: Layout,
       meta: { hidden: false, icon: 'el-icon-notebook-2' },
       children: [
         { name: '课程列表', path: '/courses/list', component: CourseList, meta: { icon: 'el-icon-reading' } },

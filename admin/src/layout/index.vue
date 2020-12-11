@@ -4,7 +4,7 @@
     <el-container>
       <el-header>后台管理系统</el-header>
       <el-main>
-        <router-view :key="route.path"></router-view>
+        <router-view :key="route.fullPath"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import Menu from '../layout/Menu.vue'
+import Menu from './Menu.vue'
 export default defineComponent({
   name: 'Main',
   components: { Menu },

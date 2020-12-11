@@ -40,23 +40,6 @@
 import { defineComponent, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const menu = {
-  items: [
-    { title: '首页', icon: 'el-icon-s-home', path: '/' },
-    {
-      title: '内容管理',
-      items: [
-        { title: '课程管理', path: '/courses/list' },
-        { title: '课时管理', path: '/courses/edit/123' }
-      ]
-    },
-    {
-      title: '运营管理',
-      items: [{ title: '用户管理', path: '/users/list' }]
-    }
-  ]
-}
-
 export default defineComponent({
   name: 'Menu',
   setup() {
@@ -68,7 +51,6 @@ export default defineComponent({
     return {
       isCollapse,
       route,
-      menu,
       router
     }
   }
