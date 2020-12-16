@@ -31,20 +31,18 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-table
-      :data="coursesList.list"
-      border
-      style="width: 100%; margin:20px 0;"
-    >
-      <el-table-column prop="_id" name="id" label="ID"> </el-table-column>
-      <el-table-column prop="name" name="name" label="课程" width="180"> </el-table-column>
-      <el-table-column prop="cover" name="cover" label="封面">
+    <el-table :data="episodesList" border style="width: 100%; margin:20px 0;">
+      <el-table-column prop="courseName" name="id" label="所属课程">
+      </el-table-column>
+      <el-table-column prop="name" name="name" label="课时名称" width="180">
+      </el-table-column>
+      <el-table-column prop="file" name="file" label="文件">
         <template #default="scope">
           <el-image
             style="width: 100px; height: 100px"
-            :src="scope.row.cover"
+            :src="scope.row.file"
             fit="scale-down"
-            :preview-src-list="[scope.row.cover]"
+            :preview-src-list="[scope.row.file]"
           ></el-image>
         </template>
       </el-table-column>
@@ -98,16 +96,14 @@ import { get, deleteReq } from '../../api/api'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Modal from './modal.vue'
 export default defineComponent({
-  name: 'About',
+  name: 'Episodes',
   components: { Modal },
   setup(props, context) {
     const inputVal = ref('')
     const currentId = ref('')
     const modalRef: any = ref<null | HTMLElement>(null)
     const router = useRouter()
-    const coursesList = reactive({
-      list: []
-    })
+    const episodesList = ref([])
 
     const query = reactive({
       page: 1,
@@ -117,11 +113,22 @@ export default defineComponent({
       layout: 'total, sizes, prev, pager, next, jumper',
       where: {}
     })
+    const courseOpt = ref([])
 
+    const getCourseOption = async () => {
+      const data: any = await get('/episodes/option')
+      console.log(data)
+      courseOpt.value = data.dicData
+    }
     // 获取列表
     const fetchList = async () => {
-      const res: any = await get('/courses', { query })
-      coursesList.list = res.data
+      await getCourseOption()
+      const res: any = await get('/episodes', { query })
+      const newArr = res.data.map((it: any) => {
+        const c: any = courseOpt.value.find((v: any) => it.course === v.value)
+        it.courseName = c && c.label
+      })
+      episodesList.value = res.data
       query.total = res.total
     }
 
@@ -145,7 +152,7 @@ export default defineComponent({
         type: 'warning'
       })
         .then(async () => {
-          await deleteReq(`/courses/${id}`)
+          await deleteReq(`/episodes/${id}`)
           ElMessage.success('删除成功')
           fetchList()
         })
@@ -161,17 +168,21 @@ export default defineComponent({
     const showModal = ref(false)
 
     const handleModalClick = (visible: boolean, id?: any) => {
+      // modalRef.value.getCourseOption()
+      console.log('visible', visible)
       showModal.value = visible
+
       if (id && typeof id === 'string') {
         currentId.value = id
-        modalRef.value.getCourseDetail(id)
+        modalRef.value.getDetail(id)
       }
 
       !visible && fetchList()
+      console.log('fetchList---', visible)
     }
 
     return {
-      coursesList,
+      episodesList,
       router,
       onDelete,
       handleSizeChange,

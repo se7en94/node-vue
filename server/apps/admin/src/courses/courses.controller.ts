@@ -6,21 +6,10 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { ApiTags } from '@nestjs/swagger';
 
 @Crud({
-  model: Course
+  model: Course,
 })
 @ApiTags('课程')
 @Controller('courses')
 export class CoursesController {
   constructor(@InjectModel(Course) private readonly model: ReturnModelType<typeof Course>) { }
-
-  @Get('option')
-  option () {
-    return {
-      title: '课程管理',
-      column: [
-        { prop: 'name', label: '课程名称' },
-        { prop: 'cover', label: '课程封面图' }
-      ]
-    }
-  }
 }

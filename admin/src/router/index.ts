@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import Home from '../views/Home.vue'
 import Layout from '../layout/index.vue'
 import CourseList from '../views/courses/CourseList.vue'
+import EpisodeList from '../views/episodes/EpisodeList.vue'
 import CourseEdit from '../views/courses/CourseEdit.vue'
 
 const routerHistory = createWebHistory()
@@ -28,9 +29,8 @@ const router = createRouter({
       component: Layout,
       meta: { hidden: false, icon: 'el-icon-notebook-2' },
       children: [
-        { name: '课程列表', path: '/courses/list', component: CourseList, meta: { icon: 'el-icon-reading' } },
-        { name: '新增课程', path: '/courses/create', component: CourseEdit, meta: { icon: 'el-icon-document-add' } },
-        { name: '修改课程', path: '/courses/edit/:id', component: CourseEdit, props: true, meta: { icon: 'el-icon-edit' } }
+        { name: '课程管理', path: '/courses/list', component: CourseList, meta: { icon: 'el-icon-reading' } },
+        { name: '课时管理', path: '/episodes/list', component: EpisodeList, meta: { icon: 'el-icon-document-add' } }
       ]
     }
   ]

@@ -4,6 +4,10 @@ import { Episode } from './episode.model';
 // 课程Model
 
 export class Course {
+  @ApiProperty({ description: '课程id' })
+  @prop()
+  _id: string
+
   @ApiProperty({ description: '课程名称' })
   @prop()
   name: string
@@ -14,6 +18,10 @@ export class Course {
 
   // 关联episode.model
   @ApiProperty({ description: '课时' })
-  @arrayProp({ itemsRef: Episode })
+  @arrayProp({
+    ref: 'Episode',
+    localField: '_id',
+    foreignField: 'course',
+  })
   episode: Ref<Episode>[]
 }

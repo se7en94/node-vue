@@ -6,21 +6,32 @@
     :before-close="onClose"
   >
     <el-form :model="formData" :rules="rules" ref="ruleForm">
-      <el-form-item label="名称" prop="name" label-width="80px" required>
+      <el-form-item label="所属课程" prop="course" label-width="80px">
+        <el-select v-model="course" placeholder="请选择">
+          <el-option
+            v-for="item in courseOpt"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="课时名称" prop="name" label-width="80px" required>
         <el-input
           size="small"
           v-model="formData.name"
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item label="封面" prop="cover" label-width="80px" required>
+      <el-form-item label="封面" prop="file" label-width="80px" required>
         <el-upload
           class="avatar-uploader"
           action="http://localhost:3000/upload"
           :show-file-list="false"
           :on-success="handleUploadSuccess"
         >
-          <img v-if="formData.cover" :src="formData.cover" class="avatar" />
+          <img v-if="formData.file" :src="formData.file" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -56,74 +67,84 @@ export default defineComponent({
   setup(props, context) {
     const formData = reactive({
       name: '',
-      cover: ''
+      file: ''
     })
 
     const onClose = () => {
       context.emit('on-close', false)
       formData.name = ''
-      formData.cover = ''
+      formData.file = ''
     }
     const isNew = computed(() => {
       return props.id ? '编辑' : '新增'
     })
 
-    const createCourse = async () => {
-      const data = await post('/courses', {
-        name: formData.name,
-        cover: formData.cover
-      })
-      ElMessage.success('创建成功')
-    }
-    const editCourse = async () => {
-      const data = await put(`/courses/${props.id}`, {
-        name: formData.name,
-        cover: formData.cover
-      })
-      ElMessage.success('修改成功')
-    }
-
     const handleUploadSuccess = (res: any, file: any) => {
-      formData.cover = res.url
+      formData.file = res.url
     }
-    const getCourseDetail = async (id: any) => {
-      const data: any = await get(`/courses/${id}`)
+    const getDetail = async (id: any) => {
+      const data: any = await get(`/episodes/${id}`)
       formData.name = data.name
-      formData.cover = data.cover
+      formData.file = data.file
     }
+    const courseOpt = ref([])
+    const course = ref('')
+    const getCourseOption = async () => {
+      const data: any = await get('/episodes/option')
+      console.log(data)
+      courseOpt.value = data.dicData
+    }
+    onMounted(() => {
+      getCourseOption()
+    })
 
     const rules = {
       name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-      cover: [{ required: true, message: '请上传图片', trigger: 'blur' }]
+      file: [{ required: true, message: '请上传图片', trigger: 'blur' }]
     }
     const ruleForm: any = ref<null | HTMLElement>(null)
+
+    const create = async () => {
+      const data = await post('/episodes', {
+        course: course.value,
+        name: formData.name,
+        file: formData.file
+      })
+      ElMessage.success('创建成功')
+    }
+    const edit = async () => {
+      const data = await put(`/episodes/${props.id}`, {
+        course: course.value,
+        name: formData.name,
+        file: formData.file
+      })
+      ElMessage.success('修改成功')
+    }
 
     const onSubmit = () => {
       ruleForm.value.validate((valid: any) => {
         console.log('valid', valid, ruleForm.value)
         if (valid) {
-          props.id ? editCourse() : createCourse()
+          props.id ? edit() : create()
           onClose()
         } else {
           return false
         }
       })
     }
-    // const { id } = toRefs(props)
 
-    // watch(id as object, (newVal, oldVal) => {
-    //   // getCourseDetail(id)
-    //   console.log(newVal, oldVal)
-    // })
     return {
       onClose,
       isNew,
       formData,
       onSubmit,
       handleUploadSuccess,
-      getCourseDetail,
+      getDetail,
       rules,
-      ruleForm
+      ruleForm,
+      course,
+      courseOpt,
+      getCourseOption
     }
   }
 })

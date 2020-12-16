@@ -27,7 +27,7 @@ function endLoading () { // 使用Element loading-close 方法
   loading.close()
 }
 const service: AxiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:3000', // process.env.BASE_API
+  baseURL: process.env.VUE_APP_API_URL, // 'http://127.0.0.1:3000',
   timeout: 50000 // 请求超时时间
 })
 
@@ -37,6 +37,7 @@ service.interceptors.request.use((config: any) => {
     ? config.headers['content-type'] = 'application/x-www-form-urlencoded'
     : config.headers['content-type'] = 'application/json'
   startLoading()
+  console.log(process.env.VUE_APP_API_URL)
   return config
 }, error => {
   Promise.reject(error)
